@@ -8,6 +8,14 @@ class JobType(models.TextChoices):
     Internship = 'Internship'
     
 
+class Education(models.TextChoices):
+    Bachelors = 'Bachelors'
+    Masters = 'Masters'
+    Phd = 'Phd'
+
+
+    
+
 class Job(models.Model):
     title=models.CharField(max_length=200,null=True)
     description=models.TextField(null=True)
