@@ -8,4 +8,5 @@ urlpatterns = [
   	path('job/<str:pk>/',views.getJob,name='job'),
     path('job/<str:pk>/update/',views.update,name='update_job'),
     path('job/<str:pk>/delete/',views.deleteJob,name='delete_job'),
+    path('stats/<str:topic>/',views.getTopicStats,name='topic_stats'),
 ]
