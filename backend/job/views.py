@@ -57,7 +57,7 @@ def update(request , pk):
     return Response(serializer.data)
 
 
-@api_view('DELETE')
+@api_view(['DELETE'])
 def deleteJob(request,pk):
     job=get_object_or_404(Job, id=pk)
     job.delete()
