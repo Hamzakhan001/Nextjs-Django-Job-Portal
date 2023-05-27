@@ -23,3 +23,29 @@ def getJob(request,pk):
     job=get_object_or_404(Job, id=pk)
     serializer = JobSerializer(job,many= False)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def new_job(request):
+    data=request.data
+    # ** =spread operator here
+    job=Job.objects.create(**data)
+    serializer = JobSerializer(job, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def update(request , pk):
+    job = get_object_or_404(Job, id=pk)
+    
+    job.title=request.data['title']
+    job.description=request.data['description']
+    job.email=request.data['email']
+    job.address=request.data['address']
+    job.jobType=request.data['jobType']
+    job.education=request.data['education']
+    job.industry=request.data['industry']
+    job.experience=request.data['experience']
+    
+    job.save()
+    serializer = JobSerializer(job, many=False)
+    return Response(serializer.data)
