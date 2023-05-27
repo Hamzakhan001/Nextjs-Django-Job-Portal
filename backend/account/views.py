@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 
 @api_view(['POST'])
 def register(request):
-    data=response.data
+    data=request.data
     user=SignUpSerializer(data=data)
     
     if user.is_valid():
