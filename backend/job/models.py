@@ -13,7 +13,15 @@ class Education(models.TextChoices):
     Masters = 'Masters'
     Phd = 'Phd'
 
-
+class Industry(models.TextChoices):
+    Business = 'Business'
+    IT = 'Information Technology'
+    Banking = 'Banking'
+    Education = 'Education'
+    Telecommunication = 'Telecommunication'
+    Others = 'Others'
+    
+class Experience()
     
 
 class Job(models.Model):
