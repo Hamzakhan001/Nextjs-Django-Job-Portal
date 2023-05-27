@@ -1,8 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator,MaxValueValidator
 from django.contrib.auth.models import User
-from django.contrib.gis.db import models as gismodels
-from django.contrib.gis.geos import Point
+# from django.contrib.gis.db import models as gismodels
+# from django.contrib.gis.geos import Point
 from datetime import *
 import geocoder
 import os
@@ -47,24 +47,24 @@ class Job(models.Model):
     description=models.TextField(null=True)
     email= models.EmailField(null=True)
     address= models.CharField(max_length=100,null=True)
-    jobType=models.CharField(max_length=10, choices= JobType.choices, default= JobType.Permanent)
-    education =models.CharField(max_length=10, choices= Education.choices, default= Education.Bachelors)
-    industry=models.CharField(max_length=10, choices= Industry.choices, default= Industry.IT)
-    experience=models.CharField(max_length=10, choices= Experience.choices, default= Experience.ONE_YEAR)
-    salary=models.ImageField(default=1, validators=[MinValueValidator(1),MaxValueValidator(100000000)])
+    jobType=models.CharField(max_length=50, choices= JobType.choices, default= JobType.Permanent)
+    education =models.CharField(max_length=50, choices= Education.choices, default= Education.Bachelors)
+    industry=models.CharField(max_length=50, choices= Industry.choices, default= Industry.IT)
+    experience=models.CharField(max_length=50, choices= Experience.choices, default= Experience.ONE_YEAR)
+    salary=models.IntegerField(default=1, validators=[MinValueValidator(1),MaxValueValidator(100000000)])
     company=models.CharField(max_length=100,null=True)
     positions= models.IntegerField(default=1)
-    point=gismodels.PointField(default=Point(0.0,0.0))
-    lastDate = models.DateTimeField(default=rdeturn_date_time_field)
+    # point=gismodels.PointField(default=Point(0.0,0.0))
+    lastDate = models.DateTimeField(default=return_date_time_field)
     user= models.ForeignKey(User,on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     
     
-    def save(self, *args, **kwargs):
-        g=geocoder.mapquest(self.address,key=os.environ.get('GEOCODER_API'))
-        lng=g.lng
-        lat=g.lat
+    # def save(self, *args, **kwargs):
+    #     g=geocoder.mapquest(self.address,key=os.environ.get('GEOCODER_API'))
+    #     lng=g.lng
+    #     lat=g.lat
         
         
-        self.point = Point(lng,lat)
-        super(Job,self).save()
+    #     self.point = Point(lng,lat)
+    #     super(Job,self).save(*args, **kwargs)
