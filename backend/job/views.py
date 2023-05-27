@@ -58,3 +58,23 @@ def deleteJob(request,pk):
     job.delete()
     
     return Response({'message':'Job has been deleted'},status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+def getTopicStats(request,topic):
+    args={'title_icontains':topic}
+    jobs=Job.objects.filter(**args)
+    
+    if len(jobs) == 0:
+        return Response({'message':'No stats found for {format}'.format(topic=topic)})
+    
+    stats=jobs.aggregate(
+		total_jobs = Count('title'),
+  		avg = Avg('positions'),
+		avg_salary=Avg('salary'),
+		min_salary=Min('salary'),
+		max_salary=Max('salary')
+	)
+    
+    return Response(stats)
