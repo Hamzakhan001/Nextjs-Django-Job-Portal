@@ -16,6 +16,8 @@ class SignUpSerializer(serializers.ModelSerializer):
 		}
         
 class UserSerializer(serializers.ModelSerializer):
+    #first check source of file (we are getting it using related name of user profile model)
+    resume=serializers.CharField(source='userprofile.resume')
     class Meta:
         model=User
-        fields=('first_name','last_name','email','username')
+        fields=('first_name','last_name','email','username','resume')
