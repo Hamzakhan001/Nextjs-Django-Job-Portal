@@ -11,19 +11,22 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+dotenv.read_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dn^y+9o4m0$6tefuyci9f)+b6cx^r-%tc$v!j51!#)c*4if$1='
+SECRET_KEY = os.environ.get('SECRET-KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -37,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis'
 ]
 
 MIDDLEWARE = [
@@ -76,11 +80,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': "jobs-api",
-        'USER':'postgres',
-        'PASSWORD':'postgres',
-        'HOST':'localhost',
-        'PORT':'5432'
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER':os.environ.get('DATABASE_USER'),
+        'PASSWORD':os.environ.get('DATABASE_PASSWORD'),
+        'HOST':os.environ.get('DATABASE_HOST'),
+        'PORT':os.environ.get('DATABASE_PORT')
         
     }
 }
