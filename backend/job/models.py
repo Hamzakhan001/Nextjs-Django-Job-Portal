@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import MinValueValidator,MaxValueValidator
-
+from django.contrib.auth.models import User
+from django.contrib.gis.db import models as gismodels
+from django.contrib.gis.geos import Point
+from datetime import *
 
 class JobType(models.TextChoices):
     Permanent= 'Permanent'
@@ -32,6 +35,11 @@ class Salary(models.TextChoices):
     Two_Lac='Two Lac'
     Two_Plus='2+'
 
+
+def return_date_time_field():
+    now=datetime.now()
+    return now + timedelta(days=10)
+
 class Job(models.Model):
     title=models.CharField(max_length=200,null=True)
     description=models.TextField(null=True)
@@ -42,5 +50,9 @@ class Job(models.Model):
     industry=models.CharField(max_length=10, choices= Industry.choices, default= Industry.IT)
     experience=models.CharField(max_length=10, choices= Experience.choices, default= Experience.ONE_YEAR)
     salary=models.ImageField(default=1, validators=[MinValueValidator(1),MaxValueValidator(100000000)])
-    
-    
+    company=models.CharField(max_length=100,null=True)
+    positions= models.IntegerField(default=1)
+    point=gismodels.PointField(default=Point(0.0,0.0))
+    lastDate = models.DateTimeField(default=return_date_time_field)
+    user= models.ForeignKey(User,on_delete=models.CASCADE)
+    created_at=models.DateTimeField(auto_now_add=True)
