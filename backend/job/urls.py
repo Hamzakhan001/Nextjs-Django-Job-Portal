@@ -13,4 +13,5 @@ urlpatterns = [
     path('me/jobs/applied/',views.appliedJobs,name='applied_jobs'),
     path('jobs/<str:pk>/check/',views.isApplied,name='is_applied_to_job'),
     path('me/jobs/',views.getCurrentUserJobs,name='get_current_user_jobs'),
+    path('jobs/<str:pk>/candidates/',views.getCandidatedApplied,name='get_candidates_applied'),
 ]
