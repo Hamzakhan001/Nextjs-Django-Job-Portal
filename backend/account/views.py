@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 from .serializers import UserSerializer,SignUpSerializer
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
+from .validators import validate_file_extension
 
 #hashers are used to encrypt and save it to db
 
@@ -68,7 +69,7 @@ def updateUser(request):
     return Response(serializer.data)
  	
 
-@api_view(['GET'])
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def uploadResume(request):
     user = request.user
@@ -76,6 +77,11 @@ def uploadResume(request):
     
     if resume == "":
         return Response({'error':'Please upload resume'})
+    
+    isValidFile=validate_file_extension(resume.name)
+    
+    if not isValidFile:
+        return Response({'error':"Please upload only pdf file"})
     
     
     user.userprofile.resume = resume
