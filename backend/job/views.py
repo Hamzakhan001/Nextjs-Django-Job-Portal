@@ -9,6 +9,7 @@ from django.db.models import Min,Max,Avg
 from .filters import JobsFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from datetime import *
 # Create your views here.
 
 
@@ -108,3 +109,21 @@ def getTopicStats(request,topic):
 	)
     
     return Response(stats)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def applyToJob(request,pk):
+    
+    user=request.user
+    job=get_object_or_404(Job,id=pk)
+    
+    if user.userprofile.resume == " ":
+        return Response({'message':'Please upload your resume first'},status=status.HTTP_400_BAD_REQUEST)
+    
+    if job.lastDate < timezone.now():
+        return Response({'message':'Last date is already passed'},status=status.HTTP_400_BAD_REQUEST)
+    
+    alreadyApplied=job.candidatesapplied_set.filter(user=user).exists()
+    if alreadyApplied:
+        return Response({'message':'You have already applied to this job'},status=status.HTTP_400_BAD_REQUEST)
