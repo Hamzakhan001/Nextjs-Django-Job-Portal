@@ -149,3 +149,24 @@ def appliedJobs(request):
     serializer=CandidatesAppliedSerializer(jobs,many=True)
     
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def isApplied(request,pk):
+    user=request.user
+    job=get_object_or_404(Job,id=pk)
+    applied=job.candidatesapplied_set.filter(user=user).exists()
+    
+    return Response(applied)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getCurrentUserJobs(request):
+    args={'user':req.user.id}
+    
+    jobs=Job.objects.filter(**args)
+    serializer=JobSerializer(jobs,many=True)
+    
+    return Response(serializer.data)
