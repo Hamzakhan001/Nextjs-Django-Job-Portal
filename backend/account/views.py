@@ -76,12 +76,12 @@ def uploadResume(request):
     resume=request.Files['resume']
     
     if resume == "":
-        return Response({'error':'Please upload resume'})
+        return Response({'error':'Please upload resume'}, status=status.HTTP_400_BAD_REQUEST)
     
     isValidFile=validate_file_extension(resume.name)
     
     if not isValidFile:
-        return Response({'error':"Please upload only pdf file"})
+        return Response({'error':"Please upload only pdf file"}, status=status.HTTP_400_BAD_REQUEST)
     
     
     user.userprofile.resume = resume
