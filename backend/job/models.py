@@ -68,3 +68,10 @@ class Job(models.Model):
         
     #     self.point = Point(lng,lat)
     #     super(Job,self).save(*args, **kwargs)
+    
+    
+class CandidatesApplied(models.Model):
+    job=models.ForeignKey(Job,on_delete=models.CASCADE)
+    user= models.ForeignKey(User,on_delete=models.CASCADE)
+    resume=models.CharField(max_length=200)
+    applied_At=models.DateTimeField(auto_now_add=True)
