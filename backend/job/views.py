@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view,permission_classes
-from .models import Job 
+from .models import Job,CandidatesApplied
 from .serializers import JobSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -127,3 +127,14 @@ def applyToJob(request,pk):
     alreadyApplied=job.candidatesapplied_set.filter(user=user).exists()
     if alreadyApplied:
         return Response({'message':'You have already applied to this job'},status=status.HTTP_400_BAD_REQUEST)
+    
+    jobApplied=CandidatesApplied.objects.create(
+        job=job,
+        user=user,
+        resume=user.userprofile.resume
+    )
+    
+    return Response({
+        'applied':True,
+        'job_id':jobApplied.id
+    },status=status.HTTP_200_OK)
