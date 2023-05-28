@@ -67,5 +67,20 @@ def updateUser(request):
     user.save()
     return Response(serializer.data)
  	
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def uploadResume(request):
+    user = request.user
+    resume=request.Files['resume']
+    
+    if resume == "":
+        return Response({'error':'Please upload resume'})
     
     
+    user.userprofile.resume = resume
+    user.userprofile.save()
+    serializer=UserSerializer(user,many=False)
+    
+    
+    return Response(serializer.data)
